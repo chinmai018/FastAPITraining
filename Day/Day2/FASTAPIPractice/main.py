@@ -1,5 +1,35 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 app = FastAPI()
 @app.get("/")
-def read_root():
-    return {"messege":"Hello World","number":44,"is_fun":True}
+def home():
+    return {"page":"Home"}
+@app.get("/about")
+def about():
+    return{"page":"About","author":"Chinnu"}
+@app.get("/health")
+def health():
+    return {"status":"ok"}
+
+@app.post("/create")
+def create_something():
+    return {"messege":"Created"}
+
+@app.get("/student/{usn}")
+def get_result(usn):
+    return {"Result":"Distinction","usn":usn}
+
+@app.get("/candidate/{rollno}}")
+def get_candidate(rollno:int):
+    return {"Result":"Distinction","rollno":rollno,"type":str(type(rollno))}
+
+#Pydantic Model
+class Item(BaseModel):
+    name:str
+    price:float
+    in_stock: bool = True
+
+@app.post("/items")
+def create_item(item:Item):
+    return{"Recieved":item,"total_price":item.price*1.18}
+
